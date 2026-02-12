@@ -1,21 +1,25 @@
-emotion_recognition_project/
-├── colab_training_notebook.py    # 21-cell Colab training code
+emot_recog/
+├── deployment/
+│   ├── face_detector.py          # MediaPipe face detection
+│   ├── inference.py              # PyTorch and ONNX inference
+│   ├── main.py                   # Real-time webcam application
+│   └── preprocess.py             # Image preprocessing pipeline
 │
-├── training/                      # Training modules (6 files)
+├── docs/
+│   ├── DELIVERY_OVERVIEW.md      # Delivery summary
+│   ├── PROJECT_SUMMARY.md        # Technical overview
+│   ├── SETUP_GUIDE.md            # Step-by-step instructions
+│   └── emotion_recognition_project_file_struct.txt
+│
+├── training/
 │   ├── dataset.py                # AffectNet data loading
-│   ├── model.py                  # ResNet-18 & MobileNetV2
-│   ├── losses.py                 # Multi-task loss (α=1.0, β=0.5)
-│   ├── evaluate.py               # F1, CCC, confusion matrix
-│   ├── utils.py                  # Export, plotting, utilities
-│   └── train.py                  # Main training script (CLI)
+│   ├── evaluate.py               # Metrics (F1, CCC, confusion matrix)
+│   ├── losses.py                 # Multi-task loss functions
+│   ├── model.py                  # ResNet-18 and MobileNetV2 architectures
+│   ├── train.py                  # Main training script (CLI)
+│   └── utils.py                  # Export, plotting, utilities
 │
-├── deployment/                    # Deployment modules (4 files)
-│   ├── face_detector.py          # MediaPipe integration
-│   ├── preprocess.py             # Image preprocessing
-│   ├── inference.py              # PyTorch & ONNX inference
-│   └── main.py                   # Real-time webcam app
-│
-├── README.md                      # Full documentation (500 lines)
-├── SETUP_GUIDE.md                 # Step-by-step instructions
-├── PROJECT_SUMMARY.md             # Technical deep-dive
-└── requirements.txt               # All dependencies
+├── .gitignore
+├── colab_training_notebook.py    # 21-cell Colab training code
+├── README.md                     # Project documentation
+└── requirements.txt              # Dependencies

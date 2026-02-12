@@ -1,6 +1,6 @@
 # Setup Guide - Multi-Task Facial Emotion Recognition
 
-Complete step-by-step guide from training to deployment.
+Step-by-step guide from training to deployment.
 
 ---
 
@@ -9,7 +9,7 @@ Complete step-by-step guide from training to deployment.
 ### Step 1: Setup Kaggle API
 
 1. **Create Kaggle Account**
-   - Go to https://www.kaggle.com
+   - Navigate to https://www.kaggle.com
    - Sign up or log in
 
 2. **Generate API Token**
@@ -20,24 +20,24 @@ Complete step-by-step guide from training to deployment.
 
 3. **Upload to Google Drive**
    - Upload `kaggle.json` to your Google Drive
-   - Remember the path (e.g., `/content/drive/MyDrive/kaggle.json`)
+   - Note the path (e.g., `/content/drive/MyDrive/kaggle.json`)
 
 ### Step 2: Prepare Colab Notebook
 
 1. **Open Google Colab**
-   - Go to https://colab.research.google.com
+   - Navigate to https://colab.research.google.com
 
 2. **Create New Notebook**
    - Click "New Notebook"
-   - Name it "Emotion_Recognition_Training"
+   - Name it appropriately (e.g., "Emotion_Recognition_Training")
 
 3. **Set Runtime**
-   - Runtime → Change runtime type → GPU (T4 or better)
+   - Runtime > Change runtime type > GPU (T4 or better)
    - Save
 
 ### Step 3: Copy Training Code
 
-Open `colab_training_notebook.py` from the project folder. The file contains 21 cells marked with comments like:
+Open `colab_training_notebook.py` from the project folder. The file contains 21 cells marked with comments:
 
 ```python
 # ============================================================================
@@ -51,44 +51,20 @@ Copy each cell section to a separate Colab cell in order.
 
 Execute cells in sequence:
 
-**Cell 1** - Install dependencies (takes ~2 minutes)
-```
-!nvidia-smi
-!pip install kaggle torch torchvision ...
-```
-
-**Cell 2** - Mount Google Drive
-- Authorize access when prompted
-
-**Cell 3** - Download dataset (takes ~10-15 minutes)
-- Downloads AffectNet from Kaggle
-- ~2-3 GB download
-
-**Cell 4-10** - Setup code
-- Imports libraries
-- Defines dataset, model, losses
-- Quick execution
-
-**Cell 11-12** - Training loop (takes ~2-4 hours for 50 epochs)
-- Monitor training progress
-- Early stopping may trigger earlier
-
-**Cell 13-15** - Evaluation and visualization
-- Plots training curves
-- Confusion matrix
-- Test set evaluation
-
-**Cell 16-19** - Model export (takes ~5 minutes)
-- Exports to .pth, .pt, .onnx, .h5
-- Saves to Google Drive
-
-**Cell 20-21** - Final configuration and download prep
-- Creates model config
-- Zips all files
+| Cell | Description | Duration |
+|------|-------------|----------|
+| 1 | Install dependencies | ~2 minutes |
+| 2 | Mount Google Drive | Requires authorization |
+| 3 | Download dataset | ~10-15 minutes |
+| 4-10 | Setup code (imports, model, losses) | Quick |
+| 11-12 | Training loop | ~2-4 hours |
+| 13-15 | Evaluation and visualization | ~5 minutes |
+| 16-19 | Model export | ~5 minutes |
+| 20-21 | Configuration and packaging | Quick |
 
 ### Step 5: Download Trained Models
 
-After training completes, download these files from Google Drive:
+After training completes, download from Google Drive:
 
 **Required Files:**
 - `best_model.pth` - Full checkpoint
@@ -110,22 +86,19 @@ After training completes, download these files from Google Drive:
 
 ### Step 1: Setup Local Environment
 
-1. **Clone/Download Project**
+1. **Navigate to Project Directory**
 ```bash
-cd /path/to/projects
-# Extract or clone the project
-cd emotion_recognition_project
+cd /path/to/emot_recog
 ```
 
 2. **Create Virtual Environment**
 ```bash
-# Create venv
 python -m venv venv
 
-# Activate
-# On Windows:
+# Activate on Windows:
 venv\Scripts\activate
-# On macOS/Linux:
+
+# Activate on macOS/Linux:
 source venv/bin/activate
 ```
 
@@ -134,21 +107,21 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-**Note**: If you get errors:
-- **Windows**: Install Visual C++ Build Tools for some packages
-- **macOS**: May need `brew install cmake` for dlib
-- **Linux**: May need `sudo apt-get install python3-dev`
+**Platform-Specific Notes:**
+- Windows: May require Visual C++ Build Tools
+- macOS: May need `brew install cmake` for dlib
+- Linux: May need `sudo apt-get install python3-dev`
 
 ### Step 2: Organize Model Files
 
 Create a `models` directory and place downloaded files:
 
 ```
-emotion_recognition_project/
+emot_recog/
 ├── models/
-│   ├── model_weights.pth          # From Colab
-│   ├── model_config.json          # From Colab
-│   └── model.onnx                 # Optional, from Colab
+│   ├── model_weights.pth      # From Colab
+│   ├── model_config.json      # From Colab
+│   └── model.onnx             # Optional
 ├── training/
 ├── deployment/
 └── ...
@@ -157,37 +130,34 @@ emotion_recognition_project/
 ### Step 3: Test Installation
 
 ```bash
-# Test imports
-python -c "import torch; import cv2; import mediapipe; print('✓ All imports successful')"
+python -c "import torch; import cv2; import mediapipe; print('All imports successful')"
 ```
-
-If successful, proceed to webcam test.
 
 ### Step 4: Run Webcam Application
 
-**Option A: PyTorch Model**
+**PyTorch Model:**
 ```bash
 python deployment/main.py --model models/model_weights.pth --config models/model_config.json --device cpu
 ```
 
-**Option B: ONNX Model (Faster)**
+**ONNX Model (Faster):**
 ```bash
 python deployment/main.py --model models/model.onnx --onnx --device cpu
 ```
 
-**With GPU (if available):**
+**With GPU:**
 ```bash
 python deployment/main.py --model models/model_weights.pth --device cuda
 ```
 
 ### Step 5: Webcam Controls
 
-Once running:
-- **Look at camera** - System will detect face and predict emotion
-- **Press 'q'** - Quit
-- **Press 'v'** - Toggle Valence-Arousal visualization
-- **Press 'p'** - Toggle probability bars
-- **Press 's'** - Save screenshot
+| Key | Action |
+|-----|--------|
+| q | Quit |
+| v | Toggle Valence-Arousal visualization |
+| p | Toggle probability bars |
+| s | Save screenshot |
 
 ---
 
@@ -222,7 +192,7 @@ if bbox:
     # Predict
     results = recognizer.predict(input_tensor)
     
-    # Print results
+    # Output results
     print(f"Emotion: {results['emotion']}")
     print(f"Confidence: {results['confidence']:.2%}")
     print(f"Valence: {results['valence']:.2f}")
@@ -236,10 +206,8 @@ else:
 ```python
 import glob
 
-# Get all images
 image_paths = glob.glob('images/*.jpg')
 
-# Process each
 for img_path in image_paths:
     image = cv2.imread(img_path)
     bbox, _ = detector.detect_single_face(image)
@@ -285,66 +253,59 @@ cv2.destroyAllWindows()
 
 ---
 
-## Common Issues & Solutions
+## Troubleshooting
 
-### Issue 1: "No module named 'training'"
+### Issue: "No module named 'training'"
 
-**Solution**: Add project root to Python path
-```python
-import sys
-sys.path.insert(0, '/path/to/emotion_recognition_project')
-```
-
-Or run from project root:
+**Solution**: Add project root to Python path or run from project root:
 ```bash
-cd emotion_recognition_project
+cd emot_recog
 python deployment/main.py --model models/model_weights.pth
 ```
 
-### Issue 2: "Failed to open camera 0"
+### Issue: "Failed to open camera 0"
 
-**Solutions**:
+**Solution**: Try different camera ID:
 ```bash
-# Try different camera ID
 python deployment/main.py --model models/model_weights.pth --camera 1
+```
 
-# Check available cameras
+Check available cameras:
+```bash
 python -c "import cv2; print([i for i in range(5) if cv2.VideoCapture(i).isOpened()])"
 ```
 
-### Issue 3: Low FPS (< 10 FPS)
+### Issue: Low FPS (< 10 FPS)
 
 **Solutions**:
-1. Use ONNX model: `--onnx`
+1. Use ONNX model with `--onnx` flag
 2. Reduce camera resolution in code
 3. Use MobileNetV2 instead of ResNet-18
 
-### Issue 4: MediaPipe not detecting faces
+### Issue: MediaPipe not detecting faces
 
-**Solution**: Lower detection threshold
+**Solution**: Lower detection threshold:
 ```python
 detector = MediaPipeFaceDetector(min_detection_confidence=0.3)
 ```
 
-### Issue 5: "CUDA out of memory" during training
+### Issue: "CUDA out of memory" during training
 
-**Solution**: Reduce batch size
+**Solution**: Reduce batch size in Cell 7 of Colab notebook:
 ```python
-BATCH_SIZE = 32  # In Cell 7 of Colab notebook
+BATCH_SIZE = 32
 ```
 
-### Issue 6: Package installation errors
+### Issue: Package installation errors
 
-**Windows**: Install Visual C++ Build Tools
-- Download from: https://visualstudio.microsoft.com/downloads/
-- Select "Desktop development with C++"
+**Windows**: Install Visual C++ Build Tools from https://visualstudio.microsoft.com/downloads/
 
-**macOS**: Install Xcode Command Line Tools
+**macOS**: Install Xcode Command Line Tools:
 ```bash
 xcode-select --install
 ```
 
-**Linux**: Install build essentials
+**Linux**: Install build essentials:
 ```bash
 sudo apt-get update
 sudo apt-get install build-essential python3-dev
@@ -354,7 +315,7 @@ sudo apt-get install build-essential python3-dev
 
 ## Performance Optimization
 
-### For Faster CPU Inference:
+### For Faster CPU Inference
 
 1. **Use ONNX Runtime**
 ```bash
@@ -363,34 +324,32 @@ python deployment/main.py --model model.onnx --onnx
 ```
 
 2. **Use MobileNetV2**
-- Train with `--architecture mobilenetv2`
-- ~3x faster than ResNet-18
+   - Train with `--architecture mobilenetv2`
+   - Approximately 3x faster than ResNet-18
 
 3. **Reduce Input Resolution**
-- Modify preprocessor target_size to (112, 112)
-- Trade-off: slight accuracy decrease
+   - Modify preprocessor target_size to (112, 112)
+   - Trade-off: slight accuracy decrease
 
-### For Better Accuracy:
+### For Better Accuracy
 
 1. **Use ResNet-50**
-- Modify model.py to use ResNet-50
-- More parameters = better accuracy
+   - Modify model.py to use ResNet-50
+   - More parameters, better accuracy
 
 2. **Longer Training**
-- Increase epochs: `--epochs 100`
-- Better convergence
+   - Increase epochs: `--epochs 100`
 
-3. **Data Augmentation**
-- Add more augmentations in utils.py
-- Reduce overfitting
+3. **Additional Data Augmentation**
+   - Add more augmentations in utils.py
 
 ---
 
 ## Next Steps
 
-### Customize for Your Use Case:
+### Customization Options
 
-1. **Fine-tune on your data**
+1. **Fine-tune on custom data**
    - Collect custom emotion dataset
    - Resume training from pretrained weights
 
@@ -403,23 +362,19 @@ python deployment/main.py --model model.onnx --onnx
    - Use with Android/iOS
 
 4. **Create web application**
-   - Use FastAPI + JavaScript
-   - Stream predictions over WebSocket
+   - Use FastAPI with WebSocket
+   - Stream predictions in real-time
 
 ---
 
 ## Support
 
-If you encounter issues:
-1. Check this guide thoroughly
-2. Review README.md
-3. Check code comments
+For issues:
+1. Review this guide
+2. Check README.md
+3. Review code comments
 4. Open GitHub issue with:
    - Error message
    - Python version
-   - OS and GPU info
+   - OS and GPU information
    - Steps to reproduce
-
----
-
-**Happy Coding! 🎉**
